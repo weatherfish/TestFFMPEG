@@ -133,6 +133,9 @@ void resample::recAudio(void){
 
     swr_free(&swrContext);
 
+    av_frame_free(&frame);
+    av_packet_free(&packet);
+
     avformat_close_input(&fmtContext);
     av_log(NULL, AV_LOG_DEBUG, "finish \n");
     
