@@ -54,7 +54,7 @@ void resample::recAudio(void){
         return;
     } 
 
-    readDataAndEncode(fmtContext, codecContext, swrContext, outFile, resStatus);
+    readDataAndEncode(fmtContext, codecContext, swrContext, outFile);
 
 __ERROR:
     if(swrContext){

@@ -17,9 +17,12 @@ public:
     resample(/* args */);
     ~resample();
 
-    void setStatus(int status);
+    void setStatus(int status){
+        this->resStatus = status; 
+    }
 
     void recAudio(void);
+
 
 private:
 
@@ -145,7 +148,7 @@ void dellocData4Sampler(uint8_t ***src_data, uint8_t ***dst_data){
     av_freep(&dst_data);
 }
 
-void readDataAndEncode(AVFormatContext* fmtContext, AVCodecContext * codecContext, SwrContext *swrContext,  FILE* outFile, int status){
+void readDataAndEncode(AVFormatContext* fmtContext, AVCodecContext * codecContext, SwrContext *swrContext,  FILE* outFile){
     
     AVPacket * packet = nullptr;
     AVFrame *frame = nullptr;
@@ -169,7 +172,7 @@ void readDataAndEncode(AVFormatContext* fmtContext, AVCodecContext * codecContex
 
     allocData4Sampler(&src_data, &src_linesize, &dst_data, &dst_linesize);
      
-    while ((ret = av_read_frame(fmtContext, &pkt)) == 0 && status)
+    while ((ret = av_read_frame(fmtContext, &pkt)) == 0 && resStatus)
     {
         // av_log(NULL, AV_LOG_INFO, "P ackaeges Size is %d(%p)]\n", pkt.size, pkt.data);
 
