@@ -72,7 +72,7 @@ void resample::recAudio(void){
 
         memcpy(src_data[0], pkt.data, pkt.size);
         //重采样
-        swr_convert(swrContext, dst_data, dst_linesize, (uint8_t * const *)src_data, src_linesize);
+        swr_convert(swrContext, dst_data, 512, (uint8_t * const *)src_data, 512);
 
         // fwrite(pkt.data, 1, pkt.size, outFile);
         fwrite(dst_data[0], 1, dst_linesize, outFile);
