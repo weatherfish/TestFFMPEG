@@ -1,11 +1,15 @@
 #pragma once
 
-#include <stdio.h>
-#include <libavutil/avutil.h>
-#include <libavdevice/avdevice.h>
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
-#include <libswresample/swresample.h>
+#include <iostream>
+
+extern "C" {
+    #include <stdio.h>
+    #include <libavutil/avutil.h>
+    #include <libavdevice/avdevice.h>
+    #include <libavformat/avformat.h>
+    #include <libavcodec/avcodec.h>
+    #include <libswresample/swresample.h>
+}
 
 
 class resample
@@ -17,11 +21,8 @@ public:
     resample(/* args */);
     ~resample();
 
-    void setStatus(int status){
-        this->resStatus = status; 
-    }
-
-    void recAudio(void);
+    void setStatus(int status);
+    void recVideo(void); 
 
 
 private:
@@ -45,16 +46,19 @@ AVCodecContext* openCoder(){
 }
 
 //打开音频设备
-AVFormatContext* openDevice(const char *audioName){
+AVFormatContext* openDevice(const char *deviceName){
     int ret = 0;
     char errors[1024] = {0,};
 
     AVFormatContext *fmtContext;
     AVDictionary *options;
-    char *deviceName = ":0";
 
 
-    const AVInputFormat *iformat = av_find_input_format(audioName);
+    const AVInputFormat *iformat = av_find_input_format(deviceName);
+
+    av_dict_set(&options, "video_size", "640x480", 0); 
+    av_dict_set(&options, "framerate", "30", 0); 
+    av_dict_set(&options, "pixel_format", "nv12", 0); 
 
     if((ret = avformat_open_input(&fmtContext, deviceName, iformat, &options)) < 0){
         av_strerror(ret, errors, 1024);
@@ -111,7 +115,7 @@ SwrContext *initSwr(){
     return swrContext;
 }
 
-void encodeAudio(AVCodecContext *codecContext, AVFrame *frame, AVPacket *packet, FILE* outFile){
+void encodeData(AVCodecContext *codecContext, AVFrame *frame, AVPacket *packet, FILE* outFile){
      int ret = avcodec_send_frame(codecContext,frame);
     while (ret >= 0)
     {
@@ -122,9 +126,22 @@ void encodeAudio(AVCodecContext *codecContext, AVFrame *frame, AVPacket *packet,
         }else if(ret < 0){
             exit(-1); 
         }
-            // fwrite(pkt.data, 1, pkt.size, outFile);
-        // fwrite(dst_data[0], 1, dst_linesize, outFile);
-        fwrite(packet->data, 1, packet->size, outFile);
+        // fwrite(packet->data, 1, packet->size, outFile);
+        //分辨率 X 1.5
+        float count = 1;
+        if(frame->format == AVPixelFormat::AV_PIX_FMT_YUV420P){
+            count = 1.5;
+        }else  if(frame->format == AVPixelFormat::AV_PIX_FMT_YUV422P){
+            count = 2;
+        } if(frame->format == AVPixelFormat::AV_PIX_FMT_YUV444P){
+            count = 3;
+        }
+        
+        size_t size = frame->width * frame->height * count;
+
+        std::cout<<"Out file format = "<< frame->format <<" 分辨率 = "<< frame->width <<"x"<<frame->height<<std::endl;
+
+        fwrite(packet->data, 1, size, outFile);
         fflush(outFile); 
     }
 }
@@ -182,12 +199,12 @@ void readDataAndEncode(AVFormatContext* fmtContext, AVCodecContext * codecContex
 
         memcpy(frame->data[0], dst_data[0], dst_linesize); //重采样数据拷贝到frame
 
-        encodeAudio(codecContext, frame, packet, outFile);
+        encodeData(codecContext, frame, packet, outFile);
 
         av_packet_unref(&pkt);
     }
     //强制缓冲区数据进行编码 
-    encodeAudio(codecContext, NULL, packet, outFile);
+    encodeData(codecContext, NULL, packet, outFile);
 
 __ERROR:
     if(frame){

@@ -1,5 +1,4 @@
 #include "resample.h"
-#include <iostream>
 
 resample::resample(/* args */)
 {
@@ -10,10 +9,10 @@ resample::~resample()
 }
 
 void resample::setStatus(int status){
-    
+    this->resStatus = status; 
 }
 
-void resample::recAudio(void){
+void resample::recVideo(void){
 
     AVFormatContext *fmtContext = nullptr;
     AVCodecContext*  codecContext = nullptr;
@@ -21,10 +20,11 @@ void resample::recAudio(void){
 
     int ret = 0;
     char errors[1024] = {0,};
-    char *deviceName = ":0";
+    char *deviceName = "0";
     resStatus = 1;
     // char *out = "audio.pcm";
-    char *out = "audio.aac"; 
+    // char *out = "audio.aac"; 
+    char *out = "video.yuv"; 
     FILE *outFile = fopen(out, "wb+");
     if(!outFile){
         std::cout<<"Failed to open file"<<std::endl;
@@ -37,7 +37,7 @@ void resample::recAudio(void){
     //打开设备
      fmtContext = openDevice("avfoundation");
     if(!fmtContext){
-        std::cout<<"Failed to open file"<<std::endl;
+        std::cout<<"Failed to open video device"<<std::endl;
         goto __ERROR; 
     }
 
