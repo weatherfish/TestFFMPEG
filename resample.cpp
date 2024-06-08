@@ -81,6 +81,19 @@ void resample::recAudio(void){
     }
 
     fclose(outFile);
+
+    if(src_data){
+        av_freep(&src_data[0]);
+    }
+    av_freep(&src_data);
+
+    if(dst_data){
+        av_freep(&dst_data[0]);
+    }
+    av_freep(&dst_data);
+
+    swr_free(&swrContext);
+
     avformat_close_input(&fmtContext);
     av_log(NULL, AV_LOG_DEBUG, "finish \n");
     
