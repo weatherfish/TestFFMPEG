@@ -39,7 +39,9 @@ void resample::recAudio(void){
         return;
     }
 
-    char *out = "audio.pcm";
+
+    // char *out = "audio.pcm";
+    char *out = "audio.aac";
     FILE *outFile = fopen(out, "wb+");
 
 
@@ -55,9 +57,26 @@ void resample::recAudio(void){
     codecContext->profile = FF_PROFILE_AAC_HE_V2;
 
     if(avcodec_open2(codecContext, codec, NULL) <0){
-        
+
     }
 
+    AVFrame *frame = av_frame_alloc();
+    if(!frame){
+
+    }
+    frame->nb_samples = 512; //单通道一个音频帧每秒采样数
+    frame->format = AV_SAMPLE_FMT_S16;
+    frame->ch_layout = channelLayout;
+
+    av_frame_get_buffer(frame, 0);
+    if(!frame->buf[0]){
+
+    }
+
+    AVPacket * packet = av_packet_alloc();
+    if(!packet){
+         
+    }
 
 
     SwrContext *swrContext;
@@ -91,11 +110,14 @@ void resample::recAudio(void){
         //重采样
         swr_convert(swrContext, dst_data, 512, (uint8_t * const *)src_data, 512);
 
-        // fwrite(pkt.data, 1, pkt.size, outFile);
-        fwrite(dst_data[0], 1, dst_linesize, outFile);
-        fflush(outFile);
+        memcpy(frame->data[0], dst_data[0], dst_linesize); //重采样数据拷贝到frame
+
+        encodeAudio(codecContext, frame, packet, outFile);
+
         av_packet_unref(&pkt);
     }
+
+    encodeAudio(codecContext, NULL, packet, outFile);
 
     fclose(outFile);
 
@@ -114,4 +136,26 @@ void resample::recAudio(void){
     avformat_close_input(&fmtContext);
     av_log(NULL, AV_LOG_DEBUG, "finish \n");
     
+}
+
+
+void encodeAudio(AVCodecContext *codecContext, AVFrame *frame, AVPacket *packet, FILE* outFile){
+     int ret = avcodec_send_frame(codecContext,frame);
+
+        while (ret >= 0)
+        {
+            //获取编码后的音频数据
+            ret = avcodec_receive_packet(codecContext, packet);
+            if(ret == AVERROR(EAGAIN) || ret == AVERROR_EOF){
+                return;
+            }else if(ret < 0){
+                exit(-1); 
+            }
+               // fwrite(pkt.data, 1, pkt.size, outFile);
+            // fwrite(dst_data[0], 1, dst_linesize, outFile);
+            fwrite(packet->data, 1, packet->size, outFile);
+            fflush(outFile); 
+        }
+        
+      
 }
