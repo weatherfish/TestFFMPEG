@@ -42,8 +42,25 @@ void resample::recAudio(void){
     char *out = "audio.pcm";
     FILE *outFile = fopen(out, "wb+");
 
-    SwrContext *swrContext;
+
+    const AVCodec *codec = avcodec_find_encoder_by_name("libfdk_aac");
+    AVCodecContext * codecContext = avcodec_alloc_context3(codec);
     AVChannelLayout channelLayout = AV_CHANNEL_LAYOUT_STEREO;
+    
+    codecContext->sample_fmt = AV_SAMPLE_FMT_S16;
+    codecContext->ch_layout = channelLayout;
+    codecContext->sample_rate = 441000;
+    // codecContext->bit_rate = 64000;
+    codecContext->bit_rate = 0;
+    codecContext->profile = FF_PROFILE_AAC_HE_V2;
+
+    if(avcodec_open2(codecContext, codec, NULL) <0){
+        
+    }
+
+
+
+    SwrContext *swrContext;
     
     swr_alloc_set_opts2(&swrContext,  &channelLayout, AV_SAMPLE_FMT_S16, 441000, 
                          &channelLayout, AV_SAMPLE_FMT_FLT, 441000, 0, NULL);
