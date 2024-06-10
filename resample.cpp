@@ -1,18 +1,18 @@
 #include "resample.h"
 
-resample::resample(/* args */)
+ReSample::ReSample(/* args */)
 {
 }
 
-resample::~resample()
+ReSample::~ReSample()
 {
 }
 
-void resample::setStatus(int status){
+void ReSample::setStatus(int status){
     this->resStatus = status; 
 }
 
-void resample::recVideo(void){
+void ReSample::recVideo(void){
 
     AVFormatContext *fmtContext = nullptr;
     AVCodecContext*  codecContext = nullptr;

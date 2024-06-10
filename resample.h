@@ -12,14 +12,14 @@ extern "C" {
 }
 
 
-class resample
+class ReSample
 {
 private:
     int resStatus;
 
 public:
-    resample(/* args */);
-    ~resample();
+    ReSample(/* args */);
+    ~ReSample();
 
     void setStatus(int status);
     void recVideo(void); 
