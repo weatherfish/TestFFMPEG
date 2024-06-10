@@ -35,18 +35,21 @@ void ReSample::recVideo(void){
     avdevice_register_all();
 
     //打开设备
-     fmtContext = openDevice("avfoundation");
+    fmtContext = openDevice("avfoundation");
+
     if(!fmtContext){
         std::cout<<"Failed to open video device"<<std::endl;
         goto __ERROR; 
     }
 
-    //打开编码器上下文
-    codecContext = openCoder();
-    if(!codecContext){
-        std::cout<<"Failed to openCoder"<<std::endl;
-        return;
-    } 
+    openVideoEncoder(640, 480, &codecContext);
+
+    //打开音频编码器上下文
+    // codecContext = openCoder();
+    // if(!codecContext){
+    //     std::cout<<"Failed to openCoder"<<std::endl;
+    //     return;
+    // } 
 
     swrContext = initSwr(); 
     if(!swrContext){

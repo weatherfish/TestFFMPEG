@@ -27,7 +27,7 @@ public:
 
 private:
 
-AVCodecContext* openCoder(){
+AVCodecContext*  openCoder(){
     const AVCodec *codec = avcodec_find_encoder_by_name("libfdk_aac");
     AVCodecContext * codecContext = avcodec_alloc_context3(codec);
     AVChannelLayout channelLayout = AV_CHANNEL_LAYOUT_STEREO;
@@ -45,13 +45,58 @@ AVCodecContext* openCoder(){
     return codecContext;
 }
 
+void openVideoEncoder(int width, int height, AVCodecContext **codecContext){
+    const AVCodec *codec = avcodec_find_encoder_by_name("libx264");
+    if(!codec){
+        std::cout<<"Codec lib264x not found "<<std::endl;
+        exit(0);
+    }
+    *codecContext = avcodec_alloc_context3(codec);
+    if(!codecContext){
+        std::cout<<"Cound not alloc  video codec "<<std::endl;
+        exit(0);
+    }
+  
+    (*codecContext)->profile = FF_PROFILE_H264_HIGH_444;
+    (*codecContext)->level = 50; //level  5.0
+   
+    (*codecContext)->width = 640;
+    (*codecContext)->height = 480;
+  
+    (*codecContext)->gop_size = 250;
+    (*codecContext)->keyint_min = 25; //最小i帧间距
+
+    (*codecContext)->max_b_frames = 3; //最大B帧
+    (*codecContext)->has_b_frames = 1;  
+
+    (*codecContext)->refs = 3; //参考帧的数量
+
+    (*codecContext)->pix_fmt = AV_PIX_FMT_YUV420P; //输入YUV格式
+
+
+    (*codecContext)->bit_rate = 600 * 1000; //码率
+
+    (*codecContext)->time_base = (AVRational){1, 25};///帧间隔，帧率的倒数
+
+    (*codecContext)->framerate = (AVRational){25, 1}; ///帧率
+
+    int ret = avcodec_open2((*codecContext),codec, NULL);
+    if(ret < 0){
+        std::cout<<"Can not open codec"<<std::endl;
+        exit(1);
+    }
+
+
+
+}
+
 //打开音频设备
 AVFormatContext* openDevice(const char *deviceName){
     int ret = 0;
     char errors[1024] = {0,};
 
-    AVFormatContext *fmtContext;
-    AVDictionary *options;
+    AVFormatContext *fmtContext = NULL;
+    AVDictionary *options = NULL;
 
 
     const AVInputFormat *iformat = av_find_input_format(deviceName);
