@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#define FRAME_WIDTH 640
+#define FRAME_HEIGHT 480
+
 extern "C" {
     #include <stdio.h>
     #include <libavutil/avutil.h>
@@ -60,8 +63,8 @@ void openVideoEncoder(int width, int height, AVCodecContext **codecContext){
     (*codecContext)->profile = FF_PROFILE_H264_HIGH_444;
     (*codecContext)->level = 50; //level  5.0
    
-    (*codecContext)->width = 640;
-    (*codecContext)->height = 480;
+    (*codecContext)->width = FRAME_WIDTH;
+    (*codecContext)->height = FRAME_HEIGHT;
   
     (*codecContext)->gop_size = 250;
     (*codecContext)->keyint_min = 25; //最小i帧间距
@@ -85,9 +88,6 @@ void openVideoEncoder(int width, int height, AVCodecContext **codecContext){
         std::cout<<"Can not open codec"<<std::endl;
         exit(1);
     }
-
-
-
 }
 
 //打开音频设备
@@ -113,8 +113,7 @@ AVFormatContext* openDevice(const char *deviceName){
     return fmtContext;
 }
 
-AVFrame *createFrame(){
-
+AVFrame *createFrame(int width, int height){
     AVChannelLayout channelLayout = AV_CHANNEL_LAYOUT_STEREO;
 
     //音频输入
@@ -128,11 +127,12 @@ AVFrame *createFrame(){
     // frame->nb_samples = 512; //单通道一个音频帧每秒采样数
     frame->format = AV_PIX_FMT_YUV420P;
     frame->ch_layout = channelLayout;
-    frame->width = 640;
-    frame->height = 480;
+    frame->width = width;
+    frame->height = height;
 
     //申请Buffer
-    av_frame_get_buffer(frame, 32);
+    // av_frame_get_buffer(frame, 0);  //音频
+    av_frame_get_buffer(frame, 32); //视频 按照32位对齐
     if(!frame->buf[0]){
         std::cout<<"Failed to alloc buffer in frame"<<std::endl;
         goto __ERROR;
@@ -236,22 +236,42 @@ void readDataAndEncode(AVFormatContext* fmtContext, AVCodecContext * codecContex
     AVPacket pkt;
     int ret = 0;
 
-    frame = createFrame();
+    frame = createFrame(FRAME_WIDTH, FRAME_HEIGHT);
     if(!frame){
+        std::cout<<"createFrame error"<<std::endl;
         goto __ERROR;
     }
 
     packet = av_packet_alloc();
     if(!packet){
-         goto __ERROR;
+        std::cout<<"alloc packet error"<<std::endl;
+        goto __ERROR;
     }
 
-    allocData4Sampler(&src_data, &src_linesize, &dst_data, &dst_linesize);
+    // allocData4Sampler(&src_data, &src_linesize, &dst_data, &dst_linesize);
      
     while ((ret = av_read_frame(fmtContext, &pkt)) == 0 && resStatus)
     {
-        // av_log(NULL, AV_LOG_INFO, "P ackaeges Size is %d(%p)]\n", pkt.size, pkt.data);
+        av_log(NULL, AV_LOG_INFO, "Packaeges Size is %d(%p)]\n", pkt.size, pkt.data);
 
+        // fwrite(pkt.data, 1, 460800, outFile);
+
+        memcpy(frame->data[0], (void*)pkt.data[0], 307200); //y数据
+
+        for (size_t i = 0; i < 307200/4; i++)
+        {
+            frame->data[1][i] = pkt.data[307200+i];
+            frame->data[2][i] = pkt.data[307200+i+1];
+        }
+
+        fwrite(frame->data[0], 1, 307200, outFile);
+        fwrite(frame->data[1], 1, 30720/4, outFile);
+        fwrite(frame->data[2], 1, 307200/4, outFile);
+        fflush(outFile);
+
+        
+
+        /**
         memcpy(src_data[0], pkt.data, pkt.size);
         //重采样
         swr_convert(swrContext, dst_data, 512, (uint8_t * const *)src_data, 512);
@@ -259,11 +279,11 @@ void readDataAndEncode(AVFormatContext* fmtContext, AVCodecContext * codecContex
         memcpy(frame->data[0], dst_data[0], dst_linesize); //重采样数据拷贝到frame
 
         encodeData(codecContext, frame, packet, outFile);
-
+        */
         av_packet_unref(&pkt);
     }
     //强制缓冲区数据进行编码 
-    encodeData(codecContext, NULL, packet, outFile);
+    // encodeData(codecContext, NULL, packet, outFile);
 
 __ERROR:
     if(frame){
@@ -273,7 +293,7 @@ __ERROR:
         av_packet_free(&packet);
     }
      
-    dellocData4Sampler(&src_data, &dst_data);
+    // dellocData4Sampler(&src_data, &dst_data);
 }
 
 };

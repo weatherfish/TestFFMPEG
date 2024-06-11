@@ -43,7 +43,7 @@ void ReSample::recVideo(void){
         goto __ERROR; 
     }
 
-    openVideoEncoder(640, 480, &codecContext);
+    openVideoEncoder(FRAME_WIDTH, FRAME_HEIGHT, &codecContext);
 
     //打开音频编码器上下文
     // codecContext = openCoder();
