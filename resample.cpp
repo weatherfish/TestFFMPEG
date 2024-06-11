@@ -35,7 +35,8 @@ void ReSample::recVideo(void){
     avdevice_register_all();
 
     //打开设备
-    fmtContext = openDevice("avfoundation");
+    fmtContext = openDevice("0");
+    // fmtContext = openDevice("0:1");
 
     if(!fmtContext){
         std::cout<<"Failed to open video device"<<std::endl;

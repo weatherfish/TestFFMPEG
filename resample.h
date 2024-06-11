@@ -99,7 +99,7 @@ AVFormatContext* openDevice(const char *deviceName){
     AVDictionary *options = NULL;
 
 
-    const AVInputFormat *iformat = av_find_input_format(deviceName);
+    const AVInputFormat *iformat = av_find_input_format("AVFoundation");
 
     av_dict_set(&options, "video_size", "640x480", 0); 
     av_dict_set(&options, "framerate", "30", 0); 
@@ -123,16 +123,25 @@ AVFrame *createFrame(){
         std::cout<<"Error, no momery"<<std::endl;
         goto __ERROR;
     }
+
     //设置参数
-    frame->nb_samples = 512; //单通道一个音频帧每秒采样数
-    frame->format = AV_SAMPLE_FMT_S16;
+    // frame->nb_samples = 512; //单通道一个音频帧每秒采样数
+    frame->format = AV_PIX_FMT_YUV420P;
     frame->ch_layout = channelLayout;
+    frame->width = 640;
+    frame->height = 480;
 
     //申请Buffer
-    av_frame_get_buffer(frame, 0);
+    av_frame_get_buffer(frame, 32);
     if(!frame->buf[0]){
         std::cout<<"Failed to alloc buffer in frame"<<std::endl;
         goto __ERROR;
+    }
+
+    // 检查步幅是否正确设置
+    if (frame->linesize[0] < frame->width) {
+        fprintf(stderr, "Stride too small\n");
+        return nullptr;
     }
 
     return frame;
@@ -146,9 +155,14 @@ __ERROR:
 
 SwrContext *initSwr(){
     AVChannelLayout channelLayout = AV_CHANNEL_LAYOUT_STEREO;
-    SwrContext *swrContext;
-    swr_alloc_set_opts2(&swrContext,  &channelLayout, AV_SAMPLE_FMT_S16, 441000, 
-                         &channelLayout, AV_SAMPLE_FMT_FLT, 441000, 0, NULL);
+
+    // 分配 SwrContext
+    SwrContext *swrContext = swr_alloc();
+
+    // 使用正确的采样率设置 SwrContext 参数
+    swr_alloc_set_opts2(&swrContext, &channelLayout, AV_SAMPLE_FMT_S16, 44100, 
+                        &channelLayout, AV_SAMPLE_FMT_FLT, 44100, 0, NULL);
+
 
     if(!swrContext){
 
@@ -201,13 +215,13 @@ void allocData4Sampler(uint8_t ***src_data, int* src_linesize, uint8_t ***dst_da
 void dellocData4Sampler(uint8_t ***src_data, uint8_t ***dst_data){
     if(src_data){
         av_freep(&src_data[0]);
+        av_freep(src_data);
     }
-    av_freep(&src_data);
 
     if(dst_data){
         av_freep(&dst_data[0]);
+        av_freep(dst_data);
     }
-    av_freep(&dst_data);
 }
 
 void readDataAndEncode(AVFormatContext* fmtContext, AVCodecContext * codecContext, SwrContext *swrContext,  FILE* outFile){
