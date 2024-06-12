@@ -38,8 +38,8 @@ bool ReSample::openDevice() {
     av_dict_set(&options, "framerate", "30", 0);
     av_dict_set(&options, "pixel_format", "nv12", 0);
 
-    // const AVInputFormat* inputFormat = av_find_input_format("AVFoundation");
-    int ret = avformat_open_input(&fmtContext, deviceName.c_str(), nullptr, &options);
+    const AVInputFormat* inputFormat = av_find_input_format("AVFoundation");
+    int ret = avformat_open_input(&fmtContext, deviceName.c_str(), inputFormat, &options);
     av_dict_free(&options);
 
     if (ret < 0) {
@@ -160,7 +160,6 @@ void ReSample::encodeData(AVFrame* frame) {
     fwrite(frame->data, 1, frame->pkt_size, outFile);
     fflush(outFile);
     return;
-
     int ret = avcodec_send_frame(videoCodecContext, frame);
     if (ret < 0) {
         std::cerr << "#### Error sending frame to encoder" << std::endl;

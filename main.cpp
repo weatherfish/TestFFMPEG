@@ -11,7 +11,8 @@ void stopVideo(ReSample* sample){
 }
 
 int main(int argc, char** argv){
-    ReSample *sample = new ReSample("sample.mp4", "video.yuv");
+    // ReSample *sample = new ReSample("sample.mp4", "video.yuv");
+    ReSample *sample = new ReSample("0", "video.yuv");
     
     // std::thread t(stopVideo, std::ref(sample));
     sample->startRecording();

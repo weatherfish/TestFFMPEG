@@ -4,8 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/ffmpeg/include",
-                "/usr/local/Cellar/ffmpeg/7.0.1/include"
+                "/opt/ffmpeg/include"
             ],
             "defines": [],
             "macFrameworkPath": [
