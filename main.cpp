@@ -14,7 +14,7 @@ int main(int argc, char** argv){
     ReSample *sample = new ReSample();
     
     // std::thread t(stopVideo, std::ref(sample));
-    sample->recVideo();
+    sample->recAudio();
     // t.join();
     free(sample);
 

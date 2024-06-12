@@ -1,4 +1,5 @@
 #include "resample.h"
+#include <iostream>
 
 ReSample::ReSample(/* args */)
 {
@@ -12,7 +13,7 @@ void ReSample::setStatus(int status){
     this->resStatus = status; 
 }
 
-void ReSample::recVideo(void){
+void ReSample::recAudio(void){
 
     AVFormatContext *fmtContext = nullptr;
     AVCodecContext*  codecContext = nullptr;
@@ -20,11 +21,10 @@ void ReSample::recVideo(void){
 
     int ret = 0;
     char errors[1024] = {0,};
-    char *deviceName = "0";
+    char *deviceName = ":0";
     resStatus = 1;
     // char *out = "audio.pcm";
-    // char *out = "audio.aac"; 
-    char *out = "video.yuv"; 
+    char *out = "audio.aac"; 
     FILE *outFile = fopen(out, "wb+");
     if(!outFile){
         std::cout<<"Failed to open file"<<std::endl;
@@ -35,22 +35,18 @@ void ReSample::recVideo(void){
     avdevice_register_all();
 
     //打开设备
-    fmtContext = openDevice("0");
-    // fmtContext = openDevice("0:1");
-
+    fmtContext = openDevice("avfoundation");
     if(!fmtContext){
-        std::cout<<"Failed to open video device"<<std::endl;
+        std::cout<<"Failed to open file"<<std::endl;
         goto __ERROR; 
     }
 
-    openVideoEncoder(FRAME_WIDTH, FRAME_HEIGHT, &codecContext);
-
-    //打开音频编码器上下文
-    // codecContext = openCoder();
-    // if(!codecContext){
-    //     std::cout<<"Failed to openCoder"<<std::endl;
-    //     return;
-    // } 
+    //打开编码器上下文
+    codecContext = openCoder();
+    if(!codecContext){
+        std::cout<<"Failed to openCoder"<<std::endl;
+        return;
+    } 
 
     swrContext = initSwr(); 
     if(!swrContext){
