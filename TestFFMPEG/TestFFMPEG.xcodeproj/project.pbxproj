@@ -11,6 +11,7 @@
 		5E79A99B2C19B4F900865AE6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79A99A2C19B4F900865AE6 /* ContentView.swift */; };
 		5E79A99D2C19B4FA00865AE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E79A99C2C19B4FA00865AE6 /* Assets.xcassets */; };
 		5E79A9A12C19B4FA00865AE6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E79A9A02C19B4FA00865AE6 /* Preview Assets.xcassets */; };
+		5E79A9AA2C19B5BF00865AE6 /* ReSample.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E79A9A92C19B5BF00865AE6 /* ReSample.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,9 @@
 		5E79A99C2C19B4FA00865AE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5E79A99E2C19B4FA00865AE6 /* TestFFMPEG.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestFFMPEG.entitlements; sourceTree = "<group>"; };
 		5E79A9A02C19B4FA00865AE6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5E79A9A72C19B5BF00865AE6 /* TestFFMPEG-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestFFMPEG-Bridging-Header.h"; sourceTree = "<group>"; };
+		5E79A9A82C19B5BF00865AE6 /* ReSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ReSample.h; path = TestFFMPEG/ReSample.h; sourceTree = "<group>"; };
+		5E79A9A92C19B5BF00865AE6 /* ReSample.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = ReSample.c; path = TestFFMPEG/ReSample.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,8 +40,11 @@
 		5E79A98C2C19B4F900865AE6 = {
 			isa = PBXGroup;
 			children = (
+				5E79A9A82C19B5BF00865AE6 /* ReSample.h */,
+				5E79A9A92C19B5BF00865AE6 /* ReSample.c */,
 				5E79A9972C19B4F900865AE6 /* TestFFMPEG */,
 				5E79A9962C19B4F900865AE6 /* Products */,
+				5E79A9A72C19B5BF00865AE6 /* TestFFMPEG-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,6 +108,7 @@
 				TargetAttributes = {
 					5E79A9942C19B4F900865AE6 = {
 						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
 					};
 				};
 			};
@@ -140,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E79A99B2C19B4F900865AE6 /* ContentView.swift in Sources */,
+				5E79A9AA2C19B5BF00865AE6 /* ReSample.c in Sources */,
 				5E79A9992C19B4F900865AE6 /* TestFFMPEGApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,6 +275,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TestFFMPEG/TestFFMPEG.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -294,6 +304,8 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TestFFMPEG-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -304,6 +316,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TestFFMPEG/TestFFMPEG.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -332,6 +345,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TestFFMPEG-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
