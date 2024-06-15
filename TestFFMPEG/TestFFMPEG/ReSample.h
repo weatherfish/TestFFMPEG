@@ -9,6 +9,21 @@
 #define ReSample_h
 
 #include <stdio.h>
+#include <libavutil/avutil.h>
+#include <libavdevice/avdevice.h>
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libswresample/swresample.h>
+
+int resStatus;
+
+void setStatus(int status);
+
+int getStatus();
+
+void recAudio(void);
+
+
 
 
 #endif /* ReSample_h */

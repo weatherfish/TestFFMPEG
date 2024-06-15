@@ -12,7 +12,52 @@
 		5E79A99D2C19B4FA00865AE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E79A99C2C19B4FA00865AE6 /* Assets.xcassets */; };
 		5E79A9A12C19B4FA00865AE6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E79A9A02C19B4FA00865AE6 /* Preview Assets.xcassets */; };
 		5E79A9AA2C19B5BF00865AE6 /* ReSample.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E79A9A92C19B5BF00865AE6 /* ReSample.c */; };
+		5E90319E2C1DC972000EF26B /* libpostproc.58.2.100.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9031962C1DC972000EF26B /* libpostproc.58.2.100.dylib */; };
+		5E90319F2C1DC972000EF26B /* libavutil.59.21.100.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9031972C1DC972000EF26B /* libavutil.59.21.100.dylib */; };
+		5E9031A02C1DC972000EF26B /* libavcodec.61.6.100.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9031982C1DC972000EF26B /* libavcodec.61.6.100.dylib */; };
+		5E9031A12C1DC972000EF26B /* libswresample.5.2.100.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9031992C1DC972000EF26B /* libswresample.5.2.100.dylib */; };
+		5E9031A22C1DC972000EF26B /* libavdevice.61.2.100.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E90319A2C1DC972000EF26B /* libavdevice.61.2.100.dylib */; };
+		5E9031A32C1DC972000EF26B /* libavformat.61.3.104.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E90319B2C1DC972000EF26B /* libavformat.61.3.104.dylib */; };
+		5E9031A42C1DC972000EF26B /* libavfilter.10.2.102.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E90319C2C1DC972000EF26B /* libavfilter.10.2.102.dylib */; };
+		5E9031A52C1DC972000EF26B /* libswscale.8.2.100.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E90319D2C1DC972000EF26B /* libswscale.8.2.100.dylib */; };
+		5E9031A62C1DC980000EF26B /* libavcodec.61.6.100.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E9031982C1DC972000EF26B /* libavcodec.61.6.100.dylib */; };
+		5E9031A72C1DC980000EF26B /* libavdevice.61.2.100.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E90319A2C1DC972000EF26B /* libavdevice.61.2.100.dylib */; };
+		5E9031A82C1DC980000EF26B /* libavfilter.10.2.102.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E90319C2C1DC972000EF26B /* libavfilter.10.2.102.dylib */; };
+		5E9031A92C1DC980000EF26B /* libavformat.61.3.104.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E90319B2C1DC972000EF26B /* libavformat.61.3.104.dylib */; };
+		5E9031AA2C1DC980000EF26B /* libavutil.59.21.100.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E9031972C1DC972000EF26B /* libavutil.59.21.100.dylib */; };
+		5E9031AB2C1DC980000EF26B /* libpostproc.58.2.100.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E9031962C1DC972000EF26B /* libpostproc.58.2.100.dylib */; };
+		5E9031AC2C1DC980000EF26B /* libswresample.5.2.100.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E9031992C1DC972000EF26B /* libswresample.5.2.100.dylib */; };
+		5E9031AD2C1DC980000EF26B /* libswscale.8.2.100.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 5E90319D2C1DC972000EF26B /* libswscale.8.2.100.dylib */; };
+		5E9031AE2C1DC98A000EF26B /* libavcodec.61.6.100.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E9031982C1DC972000EF26B /* libavcodec.61.6.100.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5E9031AF2C1DC98B000EF26B /* libavdevice.61.2.100.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E90319A2C1DC972000EF26B /* libavdevice.61.2.100.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5E9031B02C1DC990000EF26B /* libavfilter.10.2.102.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E90319C2C1DC972000EF26B /* libavfilter.10.2.102.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5E9031B12C1DC990000EF26B /* libavformat.61.3.104.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E90319B2C1DC972000EF26B /* libavformat.61.3.104.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5E9031B22C1DC990000EF26B /* libavutil.59.21.100.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E9031972C1DC972000EF26B /* libavutil.59.21.100.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5E9031B32C1DC990000EF26B /* libpostproc.58.2.100.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E9031962C1DC972000EF26B /* libpostproc.58.2.100.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5E9031B42C1DC990000EF26B /* libswresample.5.2.100.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E9031992C1DC972000EF26B /* libswresample.5.2.100.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5E9031B52C1DC990000EF26B /* libswscale.8.2.100.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 5E90319D2C1DC972000EF26B /* libswscale.8.2.100.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5E9031662C1DC6F3000EF26B /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5E9031B52C1DC990000EF26B /* libswscale.8.2.100.dylib in Embed Libraries */,
+				5E9031B12C1DC990000EF26B /* libavformat.61.3.104.dylib in Embed Libraries */,
+				5E9031B22C1DC990000EF26B /* libavutil.59.21.100.dylib in Embed Libraries */,
+				5E9031AF2C1DC98B000EF26B /* libavdevice.61.2.100.dylib in Embed Libraries */,
+				5E9031B32C1DC990000EF26B /* libpostproc.58.2.100.dylib in Embed Libraries */,
+				5E9031B02C1DC990000EF26B /* libavfilter.10.2.102.dylib in Embed Libraries */,
+				5E9031B42C1DC990000EF26B /* libswresample.5.2.100.dylib in Embed Libraries */,
+				5E9031AE2C1DC98A000EF26B /* libavcodec.61.6.100.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5E79A9952C19B4F900865AE6 /* TestFFMPEG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestFFMPEG.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +69,14 @@
 		5E79A9A72C19B5BF00865AE6 /* TestFFMPEG-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestFFMPEG-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E79A9A82C19B5BF00865AE6 /* ReSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ReSample.h; path = TestFFMPEG/ReSample.h; sourceTree = "<group>"; };
 		5E79A9A92C19B5BF00865AE6 /* ReSample.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = ReSample.c; path = TestFFMPEG/ReSample.c; sourceTree = "<group>"; };
+		5E9031962C1DC972000EF26B /* libpostproc.58.2.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpostproc.58.2.100.dylib; path = ../../../../../opt/ffmpeg/lib/libpostproc.58.2.100.dylib; sourceTree = "<group>"; };
+		5E9031972C1DC972000EF26B /* libavutil.59.21.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libavutil.59.21.100.dylib; path = ../../../../../opt/ffmpeg/lib/libavutil.59.21.100.dylib; sourceTree = "<group>"; };
+		5E9031982C1DC972000EF26B /* libavcodec.61.6.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libavcodec.61.6.100.dylib; path = ../../../../../opt/ffmpeg/lib/libavcodec.61.6.100.dylib; sourceTree = "<group>"; };
+		5E9031992C1DC972000EF26B /* libswresample.5.2.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libswresample.5.2.100.dylib; path = ../../../../../opt/ffmpeg/lib/libswresample.5.2.100.dylib; sourceTree = "<group>"; };
+		5E90319A2C1DC972000EF26B /* libavdevice.61.2.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libavdevice.61.2.100.dylib; path = ../../../../../opt/ffmpeg/lib/libavdevice.61.2.100.dylib; sourceTree = "<group>"; };
+		5E90319B2C1DC972000EF26B /* libavformat.61.3.104.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libavformat.61.3.104.dylib; path = ../../../../../opt/ffmpeg/lib/libavformat.61.3.104.dylib; sourceTree = "<group>"; };
+		5E90319C2C1DC972000EF26B /* libavfilter.10.2.102.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libavfilter.10.2.102.dylib; path = ../../../../../opt/ffmpeg/lib/libavfilter.10.2.102.dylib; sourceTree = "<group>"; };
+		5E90319D2C1DC972000EF26B /* libswscale.8.2.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libswscale.8.2.100.dylib; path = ../../../../../opt/ffmpeg/lib/libswscale.8.2.100.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +84,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E90319E2C1DC972000EF26B /* libpostproc.58.2.100.dylib in Frameworks */,
+				5E90319F2C1DC972000EF26B /* libavutil.59.21.100.dylib in Frameworks */,
+				5E9031A02C1DC972000EF26B /* libavcodec.61.6.100.dylib in Frameworks */,
+				5E9031A12C1DC972000EF26B /* libswresample.5.2.100.dylib in Frameworks */,
+				5E9031A22C1DC972000EF26B /* libavdevice.61.2.100.dylib in Frameworks */,
+				5E9031A32C1DC972000EF26B /* libavformat.61.3.104.dylib in Frameworks */,
+				5E9031A42C1DC972000EF26B /* libavfilter.10.2.102.dylib in Frameworks */,
+				5E9031A52C1DC972000EF26B /* libswscale.8.2.100.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +106,7 @@
 				5E79A9972C19B4F900865AE6 /* TestFFMPEG */,
 				5E79A9962C19B4F900865AE6 /* Products */,
 				5E79A9A72C19B5BF00865AE6 /* TestFFMPEG-Bridging-Header.h */,
+				5E90314C2C1DC5CB000EF26B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,6 +138,21 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		5E90314C2C1DC5CB000EF26B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5E9031982C1DC972000EF26B /* libavcodec.61.6.100.dylib */,
+				5E90319A2C1DC972000EF26B /* libavdevice.61.2.100.dylib */,
+				5E90319C2C1DC972000EF26B /* libavfilter.10.2.102.dylib */,
+				5E90319B2C1DC972000EF26B /* libavformat.61.3.104.dylib */,
+				5E9031972C1DC972000EF26B /* libavutil.59.21.100.dylib */,
+				5E9031962C1DC972000EF26B /* libpostproc.58.2.100.dylib */,
+				5E9031992C1DC972000EF26B /* libswresample.5.2.100.dylib */,
+				5E90319D2C1DC972000EF26B /* libswscale.8.2.100.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -86,6 +163,7 @@
 				5E79A9912C19B4F900865AE6 /* Sources */,
 				5E79A9922C19B4F900865AE6 /* Frameworks */,
 				5E79A9932C19B4F900865AE6 /* Resources */,
+				5E9031662C1DC6F3000EF26B /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -135,6 +213,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E9031A62C1DC980000EF26B /* libavcodec.61.6.100.dylib in Resources */,
+				5E9031A72C1DC980000EF26B /* libavdevice.61.2.100.dylib in Resources */,
+				5E9031A82C1DC980000EF26B /* libavfilter.10.2.102.dylib in Resources */,
+				5E9031A92C1DC980000EF26B /* libavformat.61.3.104.dylib in Resources */,
+				5E9031AA2C1DC980000EF26B /* libavutil.59.21.100.dylib in Resources */,
+				5E9031AB2C1DC980000EF26B /* libpostproc.58.2.100.dylib in Resources */,
+				5E9031AC2C1DC980000EF26B /* libswresample.5.2.100.dylib in Resources */,
+				5E9031AD2C1DC980000EF26B /* libswscale.8.2.100.dylib in Resources */,
 				5E79A9A12C19B4FA00865AE6 /* Preview Assets.xcassets in Resources */,
 				5E79A99D2C19B4FA00865AE6 /* Assets.xcassets in Resources */,
 			);
@@ -277,13 +363,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TestFFMPEG/TestFFMPEG.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TestFFMPEG/Preview Content\"";
-				DEVELOPMENT_TEAM = 4LD589W5JN;
+				DEVELOPMENT_TEAM = 46297P2GFS;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = /opt/ffmpeg/include;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -295,12 +384,20 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					/opt/ffmpeg/lib,
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					/opt/ffmpeg/lib,
+				);
+				LIBRARY_SEARCH_PATHS = /opt/ffmpeg/lib;
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.ffmpeg.TestFFMPEG;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.ffmpeg.Test123;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -318,13 +415,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TestFFMPEG/TestFFMPEG.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TestFFMPEG/Preview Content\"";
-				DEVELOPMENT_TEAM = 4LD589W5JN;
+				DEVELOPMENT_TEAM = 46297P2GFS;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = /opt/ffmpeg/include;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -336,12 +436,20 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					/opt/ffmpeg/lib,
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					/opt/ffmpeg/lib,
+				);
+				LIBRARY_SEARCH_PATHS = /opt/ffmpeg/lib;
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.ffmpeg.TestFFMPEG;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.ffmpeg.Test123;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
