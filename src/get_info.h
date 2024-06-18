@@ -1,12 +1,13 @@
 #ifndef GET_INFO_H
 #define GET_INFO_H
 
-#include <libavutil/avutil.h>
-#include <libavdevice/avdevice.h>
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
-#include <libswresample/swresample.h>
-
+extern "C"{
+    #include <libavutil/avutil.h>
+    #include <libavdevice/avdevice.h>
+    #include <libavformat/avformat.h>
+    #include <libavcodec/avcodec.h>
+    #include <libswresample/swresample.h>
+}
 typedef struct __AVGeneralMediaInfo{
     char filepath[1024];   //文件路径
     int64_t duration;   //时长 微秒  1000000
@@ -49,6 +50,26 @@ void get_avgeneral_mediainfo(AVGeneralMediaInfo *info, const char* filepath){
     info->duration = formatContext->duration;
     info->totalBitrate = formatContext->bit_rate;
 
+    for (size_t i = 0; i < formatContext->nb_streams; i++)
+    {
+        AVStream *avs = formatContext->streams[i];
+        if(avs->codecpar->codec_type == AVMEDIA_TYPE_VIDEO){
+            info->videoStreamIndex = i;
+            info->width = avs->codecpar->width;
+            info->height = avs->codecpar->height;
+
+            if(avs->avg_frame_rate.num != 0 &&avs->avg_frame_rate.den != 0){
+                info->frameRate = (double)avs->avg_frame_rate.num/(double)avs->avg_frame_rate.den;
+            }
+
+            printf(" width = %d, height = %d, frameRate= %lf\n" , info->width, info->height, info->frameRate);
+        }else if(avs->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
+            info->audioStreamIndex = i;
+            info->channels = avs->codecpar->ch_layout.nb_channels;
+            info->sampleRate = avs->codecpar->sample_rate;
+            printf(" channels = %d, sampleRate = %d\n", info->channels, info->sampleRate);
+        }
+    }
 
     avformat_close_input(&formatContext);
 
