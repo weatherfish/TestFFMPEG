@@ -35,10 +35,10 @@ void get_decoder_name(AVFormatContext *formatContext, AVGeneralMediaInfo *info, 
     if(index >=0 ){
         const AVCodec *codec = avcodec_find_decoder(formatContext->streams[index]->codecpar->codec_id);
          if(type == 0){//视频
-            strcpy(info->videoCodecName, codec->name);
+            strcpy(info->videoCodecName, codec->long_name);
             printf(" videoCodecName = %s\n", info->videoCodecName);
         }else if(type == 1){//音频
-            strcpy(info->audioCodecName, codec->name);
+            strcpy(info->audioCodecName, codec->long_name);
             printf(" audioCodecName = %s\n", info->audioCodecName);
         }
     }
