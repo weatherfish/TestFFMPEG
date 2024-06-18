@@ -25,6 +25,24 @@ typedef struct __AVGeneralMediaInfo{
     int channels;   //声道数
 } AVGeneralMediaInfo;
 
+void get_decoder_name(AVFormatContext *formatContext, AVGeneralMediaInfo *info, int type){
+    int index = -1;
+    if(type == 0){//视频
+        index = info->videoStreamIndex;
+    }else if(type == 1){//音频
+        index = info->audioStreamIndex;
+    }
+    if(index >=0 ){
+        const AVCodec *codec = avcodec_find_decoder(formatContext->streams[index]->codecpar->codec_id);
+         if(type == 0){//视频
+            strcpy(info->videoCodecName, codec->name);
+            printf(" videoCodecName = %s\n", info->videoCodecName);
+        }else if(type == 1){//音频
+            strcpy(info->audioCodecName, codec->name);
+            printf(" audioCodecName = %s\n", info->audioCodecName);
+        }
+    }
+}
 
 void get_avgeneral_mediainfo(AVGeneralMediaInfo *info, const char* filepath){
     int ret = -1;
@@ -70,6 +88,17 @@ void get_avgeneral_mediainfo(AVGeneralMediaInfo *info, const char* filepath){
             printf(" channels = %d, sampleRate = %d\n", info->channels, info->sampleRate);
         }
     }
+
+    // if(info->videoStreamIndex >=0 ){
+    //     const AVCodec *codec = avcodec_find_decoder(formatContext->streams[info->videoStreamIndex]->codecpar->codec_id);
+    //     strcpy(info->videoCodecName, codec->name);
+    //     printf(" videoCodecName = %s\n", info->videoCodecName);
+    // }
+
+    get_decoder_name(formatContext, info, 0);
+    get_decoder_name(formatContext, info, 1);
+    
+
 
     avformat_close_input(&formatContext);
 
