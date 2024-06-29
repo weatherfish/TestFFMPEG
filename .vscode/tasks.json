@@ -6,7 +6,7 @@
             "command": "cmake",
             "args": [
                 "..",
-                "pkg-config --libs --cflags libavutil"
+                "`pkg-config --libs --cflags libavutil`"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/build"
