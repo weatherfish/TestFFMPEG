@@ -95,8 +95,7 @@ int cut(int argc, char *argv[]) {
 
     int64_t *dtsBeginTime = av_calloc(formatContext->nb_streams, sizeof(int64_t));
     int64_t *ptsBeginTime = av_calloc(formatContext->nb_streams, sizeof(int64_t));
-    for (int i = 0; i < formatContext->nb_streams; i++)
-    {
+    for (int i = 0; i < formatContext->nb_streams; i++) {
         dtsBeginTime[i] = -1;
         ptsBeginTime[i] = -1;
     }
@@ -104,14 +103,16 @@ int cut(int argc, char *argv[]) {
     // 8. 从源文件读取数据到目标文件
     while (av_read_frame(formatContext, &packet) >= 0) {
         AVStream *inStream, *outStream;
-        if(dtsBeginTime[packet.stream_index] == -1 && packet.dts >0){
+        if (dtsBeginTime[packet.stream_index] == -1 && packet.dts > 0) {
             dtsBeginTime[packet.stream_index] = packet.dts;
         }
-        if(ptsBeginTime[packet.stream_index] == -1 && packet.pts >0){
+        if (ptsBeginTime[packet.stream_index] == -1 && packet.pts > 0) {
             ptsBeginTime[packet.stream_index] = packet.pts;
         }
+
         inStream = formatContext->streams[packet.stream_index];
-        if(av_q2d(inStream->time_base) * packet.pts > endTime){
+        
+        if (av_q2d(inStream->time_base) * packet.pts > endTime) {
             av_log(dstFormatContext, AV_LOG_INFO, "Success");
             break;
         }
@@ -120,18 +121,29 @@ int cut(int argc, char *argv[]) {
             av_packet_unref(&packet);
             continue;
         }
+
         packet.pts = packet.pts - ptsBeginTime[packet.stream_index];
         packet.dts = packet.dts - dtsBeginTime[packet.stream_index];
-        if(packet.dts > packet.pts){
-            packet.pts = packet.dts;
-        }
 
         packet.stream_index = streamMap[packet.stream_index];
+
         outStream = dstFormatContext->streams[packet.stream_index];
         av_packet_rescale_ts(&packet, inStream->time_base, outStream->time_base);
 
+        // 确保 DTS 和 PTS 是递增的
+        if (packet.dts < 0) {
+            packet.dts = 0;
+        }
+        if (packet.pts < packet.dts) {
+            packet.pts = packet.dts;
+        }
+
         packet.pos = -1; // 相对位置，内部自行计算
-        av_interleaved_write_frame(dstFormatContext, &packet);
+        ret = av_interleaved_write_frame(dstFormatContext, &packet);
+        if (ret < 0) {
+            av_log(dstFormatContext, AV_LOG_ERROR, "Error muxing packet: %s\n", av_err2str(ret));
+            break;
+        }
         av_packet_unref(&packet); // 释放引用
     }
 
@@ -155,11 +167,11 @@ _ERROR:
         av_free(streamMap);
         streamMap = NULL;
     }
-    if(ptsBeginTime){
+    if (ptsBeginTime) {
         av_free(ptsBeginTime);
         ptsBeginTime = NULL;
     }
-     if(dtsBeginTime){
+    if (dtsBeginTime) {
         av_free(dtsBeginTime);
         dtsBeginTime = NULL;
     }
