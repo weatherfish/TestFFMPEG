@@ -2,16 +2,16 @@
 #include <libavutil/avutil.h>
 #include <libavformat/avformat.h>
 
-int dosth(int argc, char *argv[]){
+int remux(int argc, char *argv[]){
     //1、处理参数
     char* src;
     char* dst;
 
     int ret = -1;
-    int audioIndex = -1;
+    int videoIndex = -1;
     AVFormatContext *formatContext = NULL;
     AVFormatContext *dstFormatContext = NULL;
-    AVOutputFormat *outFormat = NULL;
+    const AVOutputFormat *outFormat = NULL;
     AVStream *outStream = NULL;
     AVStream *inStream = NULL;
     AVPacket packet;
@@ -24,17 +24,18 @@ int dosth(int argc, char *argv[]){
 
     src = argv[1];
     dst = argv[2];
+
     //2.打开多媒体文件
-    ret = avformat_open_input(formatContext, src, NULL, NULL);
+    ret = avformat_open_input(&formatContext, src, NULL, NULL);
     if(ret < 0){
         av_log(NULL, AV_LOG_ERROR, "%s\n", av_err2str(ret));
         exit(-1);
     }
 
-    //3、找到音频流
-    audioIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, -1, -1, NULL, 0);
-    if(audioIndex < 0){
-        av_log(formatContext, AV_LOG_ERROR, "Does not include audio stream\n");
+    //3、找到视频流
+    videoIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
+    if(videoIndex < 0){
+        av_log(formatContext, AV_LOG_ERROR, "Does not include video stream\n");
         goto _ERROR;
     }
 
@@ -47,11 +48,11 @@ int dosth(int argc, char *argv[]){
     outFormat = av_guess_format(NULL, dst, NULL);
     formatContext->oformat = outFormat; //目标格式
 
-    //5、创建新的音频流为目的文件
+    //5、创建新的视频流为目的文件
     outStream = avformat_new_stream(dstFormatContext, NULL);
 
-    //6、设置输出音频参数
-    inStream = formatContext->streams[audioIndex];
+    //6、设置输出视频参数
+    inStream = formatContext->streams[videoIndex];
     avcodec_parameters_copy(outStream->codecpar, inStream->codecpar);
     outStream->codecpar->codec_tag = 0;//根据多媒体文件自动适配编解码器
     //绑定上下文
@@ -68,13 +69,13 @@ int dosth(int argc, char *argv[]){
         goto _ERROR;
     }
 
-    //8、从源读音频数据到目的文件
+    //8、从源读视频数据到目的文件
     while (av_read_frame(formatContext, &packet))
     {
-        if(packet.stream_index == audioIndex){
+        if(packet.stream_index == videoIndex){
             //pts换算
             packet.pts = av_rescale_q_rnd(packet.pts, inStream->time_base, outStream->time_base, (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
-            packet.dts = packet.dts;
+            packet.dts = av_rescale_q_rnd(packet.dts, inStream->time_base, outStream->time_base, (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
             packet.duration = av_rescale_q(packet.duration, inStream->time_base, outStream->time_base);
             packet.stream_index = 0; //只有一路流
             packet.pos = -1;//相对位置，内部自行计算

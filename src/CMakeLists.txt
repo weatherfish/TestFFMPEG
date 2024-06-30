@@ -5,13 +5,13 @@ project(TestFFmpeg)
 set(USE_M1 "True" CACHE STRING "Description of My USE_M1")
 
 # 或者根据选项的值来编译不同的源文件
-if(USE_M1 STREQUAL "True")
-    set(FFMPEG_H /opt/ffmpeg/include)
-else()
-    set(FFMPEG_H /opt/ffmpeg/include)
-endif()
+# if(USE_M1 STREQUAL "True")
+#     set(FFMPEG_H /opt/ffmpeg/include)
+# else()
+#     set(FFMPEG_H /opt/ffmpeg/include)
+# endif()
 
-include_directories(${FFMPEG_H})
+# include_directories(${FFMPEG_H})
 
 # if(USE_M1  STREQUAL "True")
 #     set(AVCODEC /opt/ffmpeg/lib/libavcodec.61.6.100.dylib)
@@ -48,7 +48,8 @@ set(CMAKE_CXX_FLAGS "-D__STDC_CONSTANT_MACROS")
 # add_subdirectory(glFramework)
 
 # file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(GLOB SOURCE_FILES "*.cpp")
+# file(GLOB SOURCE_FILES "*.cpp")
+file(GLOB_RECURSE SOURCE_FILES "*.c")
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

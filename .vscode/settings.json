@@ -47,6 +47,9 @@
         "charconv": "cpp",
         "optional": "cpp",
         "unordered_map": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "avformat.h": "c",
+        "thread": "cpp",
+        "stdio.h": "c"
     }
 }

@@ -6,7 +6,10 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/TestFFmpeg",
-            "args": [],
+            "args": [
+                "/Users/wangqiang/Movies/sample.mp4",
+                "1.aac"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build",
             "environment": [],
