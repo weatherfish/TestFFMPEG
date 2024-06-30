@@ -84,7 +84,7 @@ int remux(int argc, char *argv[]) {
         AVStream *inStream, *outStream;
         inStream = formatContext->streams[packet.stream_index];
 
-        if (packet.stream_index < 0) {
+        if (streamMap[packet.stream_index] < 0) {
             av_packet_unref(&packet);
             continue;
         }
