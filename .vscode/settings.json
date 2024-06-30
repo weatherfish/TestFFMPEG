@@ -50,6 +50,8 @@
         "vector": "cpp",
         "avformat.h": "c",
         "thread": "cpp",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "extra_audio.h": "c",
+        "get_info.h": "c"
     }
 }

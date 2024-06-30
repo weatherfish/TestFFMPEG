@@ -8,7 +8,8 @@
             "program": "${workspaceFolder}/build/TestFFmpeg",
             "args": [
                 "/Users/wangqiang/Movies/sample.mp4",
-                "1.aac"
+                // "1.aac"
+                "1.h264"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build",

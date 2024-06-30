@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include "get_info.h"
-#include "extra_audio.h"
+#include "extra.h"
 
 int main(int argc, char* argv[]){
     // AVGeneralMediaInfo *info = new AVGeneralMediaInfo();
@@ -11,7 +11,8 @@ int main(int argc, char* argv[]){
     //     info = NULL;
     // }
 
-    extra_audio(argc, argv);
+    // extra_audio(argc, argv);
+    extra_video(argc, argv);
 
     return 0; // Successful execution
 }
