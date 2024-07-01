@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
     // extra_audio(argc, argv);
     // extra_video(argc, argv);
     // remux(argc, argv);
-    cut(argc, argv);
-
+    // cut(argc, argv);
+    encodeVideo(argc, argv);
     return 0; // Successful execution
 }
