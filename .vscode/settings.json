@@ -52,6 +52,7 @@
         "thread": "cpp",
         "stdio.h": "c",
         "extra_audio.h": "c",
-        "get_info.h": "c"
+        "get_info.h": "c",
+        "opt.h": "c"
     }
 }
