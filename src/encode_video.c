@@ -42,7 +42,7 @@ int encodeVideo(int argc, char* argv[]){
         goto _ERROR;
     }
     dst = argv[1];
-    codecName = argv[1];
+    codecName = argv[2];
 
     //2 查找编码器  通过id  通过名称 （本次）
     codec = avcodec_find_encoder_by_name(codecName);

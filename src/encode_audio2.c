@@ -56,7 +56,7 @@ _END:
     return 0;
 }
 
-int encodeAudio(int argc, char* argv[]){
+int encodeAudio2(int argc, char* argv[]){
 
     int ret = -1;
     char* dst;
@@ -77,7 +77,7 @@ int encodeAudio(int argc, char* argv[]){
     // codecName = argv[1];
 
     //2 查找编码器  通过id  通过名称 （本次）
-    codec = avcodec_find_encoder_by_name("libfdk-aac"); //两个都可以，这个可以使用第三方的
+    codec = avcodec_find_encoder_by_name("libfdk_aac"); //两个都可以，这个可以使用第三方的
     // codec = avcodec_find_encoder(AV_CODEC_ID_AAC);  //这个使用的是ffmpeg内部的
     if (!codec){
         av_log(NULL, AV_LOG_ERROR, "无法为 %s 找到Codec\n", codecName);
@@ -93,15 +93,13 @@ int encodeAudio(int argc, char* argv[]){
 
     //4 设置编码器参数
     codecContext->bit_rate = 64000;
-    // codecContext->sample_fmt = AV_SAMPLE_FMT_S16;
-    codecContext->sample_fmt = AV_SAMPLE_FMT_FLTP;
+    codecContext->sample_fmt = AV_SAMPLE_FMT_S16;
     if(!check_sample_fmt(codec, codecContext->sample_fmt)){
         av_log(NULL, AV_LOG_ERROR, "编码器不支持sample format\n");
         goto _ERROR;
     }
     codecContext->sample_rate = select_best_sample_rate(codec);
     av_channel_layout_copy(&codecContext->ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_STEREO);
-    // av_channel_layout_copy(&codecContext->ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_MONO);
 
     //5 绑定编码器和上下文
     ret = avcodec_open2(codecContext, codec, NULL);
@@ -128,10 +126,8 @@ int encodeAudio(int argc, char* argv[]){
     frame->nb_samples = codecContext->frame_size;
     // frame->format = codecContext->sample_fmt;
     frame->format = AV_SAMPLE_FMT_S16;
-    // frame->format = AV_SAMPLE_FMT_FLTP;
     // av_channel_layout_copy(&frame->ch_layout, &codecContext->ch_layout);
     av_channel_layout_copy(&frame->ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_STEREO);
-    // av_channel_layout_copy(&frame->ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_MONO);
 
     ret = av_frame_get_buffer(frame, 0);
     if(ret < 0 ){
