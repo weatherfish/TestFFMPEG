@@ -16,7 +16,9 @@ int main(int argc, char* argv[]){
     // remux(argc, argv);
     // cut(argc, argv);
     // encodeVideo(argc, argv);
-    encodeAudio(argc, argv);
+    // encodeAudio(argc, argv);
     // encodeAudio2(argc, argv);
+    gen_pic(argc, argv);
+
     return 0; // Successful execution
 }
