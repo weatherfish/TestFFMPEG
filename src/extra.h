@@ -9,5 +9,6 @@ int encodeVideo(int argc, char *argv[]);
 int encodeAudio(int argc, char *argv[]);
 int encodeAudio2(int argc, char *argv[]);
 int gen_pic(int argc, char* argv[]);
+int gen_pic2(int argc, char* argv[]);
 
 #endif

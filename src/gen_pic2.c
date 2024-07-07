@@ -2,6 +2,35 @@
 #include <libavutil/avutil.h>
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
+#include <libswscale/swscale.h>
+
+#define WORD uint16_t
+#define DWORD uint32_t
+#define LONG int32_t
+
+typedef struct tagBITMAPINFOHEADER
+{
+    DWORD biSize;
+    LONG biWidth;
+    LONG biHeight;
+    WORD biPlanes;
+    WORD biBitCount;
+    DWORD biCompression;
+    DWORD biSizeImage;
+    LONG biXPelsPerMeter;
+    LONG biYPelsPerMeter;
+    DWORD biClrUsed;
+    DWORD biClrImportant;
+} BITMAPINFOHEADER, *LPBIMAPINFOHEADER, *PBITMAPINFOHEADER;
+
+typedef struct tagBITMAPFILEHEADER
+{
+    WORD bfType;
+    DWORD bfSize;
+    WORD bfReserved1;
+    WORD bfReserved2;
+    DWORD bfOffBits;
+} BITMAPFILEHEADER, *LPBITMAPFILEHEADER, *PBITMAPFILEHADER;
 
 
 static void save_pic(unsigned char* buf, int linesize, int width, int height, char* fileName){
@@ -14,7 +43,53 @@ static void save_pic(unsigned char* buf, int linesize, int width, int height, ch
     fclose(f);
 }
 
-static int decode(AVCodecContext *ctx, AVFrame *frame, AVPacket *pkt, const char* fileName){
+static void save_bmp(struct SwsContext *swsContext, AVFrame* frame, int w, int h, char* name){
+    
+    int dataSize = w * h * 3;
+    //1.将yuv转成bgr24
+    AVFrame *frameBGR = av_frame_alloc();
+    frameBGR->width =w;
+    frameBGR->height = h;
+    frameBGR->format = AV_PIX_FMT_BGR24;
+
+    av_frame_get_buffer(frameBGR, 0);//分配空间
+    
+    sws_scale(swsContext, (const uint8_t* const*)frame->data,frame->linesize,
+            0, frame->height, frameBGR->data, frameBGR->linesize);
+
+    //2.构造 BITMAPINFOHEADER
+    BITMAPINFOHEADER infoHeader;
+    infoHeader.biSize = sizeof(BITMAPINFOHEADER);
+    infoHeader.biWidth = w;
+    infoHeader.biHeight = h * (-1);
+    infoHeader.biBitCount = 24;
+    infoHeader.biCompression = 0;
+    infoHeader.biSizeImage = 0;
+    infoHeader.biClrImportant = 0;
+    infoHeader.biClrUsed = 0;
+    infoHeader.biXPelsPerMeter = 0;
+    infoHeader.biYPelsPerMeter = 0;
+    infoHeader.biPlanes = 0;
+
+    //3，构造 BITMAPFILEHEADER
+    BITMAPFILEHEADER fileHader;
+    fileHader.bfType = 0x4d42; //"BM"
+    fileHader.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + dataSize;
+    fileHader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+
+    //4 数据写文件
+    FILE *f = fopen(name, "wb");
+    fwrite(&fileHader,  sizeof(BITMAPFILEHEADER), 1, f);
+    fwrite(&infoHeader,  sizeof(BITMAPINFOHEADER), 1, f);
+    fwrite(frameBGR->data[0], 1, dataSize, f);
+    
+    //5 释放资源
+    fclose(f);
+    av_freep(&frameBGR->data[0]);
+    av_free(frameBGR);
+}
+
+static int decode(AVCodecContext *ctx, struct SwsContext *swsContext, AVFrame *frame, AVPacket *pkt, const char* fileName){
     int ret = -1;
     char buf[1024];
     ret = avcodec_send_packet(ctx, pkt);
@@ -30,15 +105,17 @@ static int decode(AVCodecContext *ctx, AVFrame *frame, AVPacket *pkt, const char
         }else if(ret < 0){
             return -1;//返回-1表示失败，需要退出程序
         }
-        snprintf(buf, sizeof(buf), "%s-%ld.jpg", fileName, ctx->frame_num);
-        save_pic(frame->data[0], frame->linesize[0], frame->width, frame->height, buf);
+        // snprintf(buf, sizeof(buf), "%s-%ld.jpg", fileName, ctx->frame_num);
+        snprintf(buf, sizeof(buf), "%s-%ld.bmp", fileName, ctx->frame_num);
+        save_bmp(swsContext, frame, frame->width, frame->width, buf);
+        // save_pic(frame->data[0], frame->linesize[0], frame->width, frame->height, buf);
         if(pkt)av_packet_unref(pkt);
     }
 _END:
     return 0;
 }
 
-int gen_pic(int argc, char *argv[]) {
+int gen_pic2(int argc, char *argv[]) {
     // 1. 处理参数ls
     char *src;
     char *dst;
@@ -52,6 +129,8 @@ int gen_pic(int argc, char *argv[]) {
 
     const AVCodec *codec;
     AVCodecContext *codecContext = NULL;
+
+    struct SwsContext * swsContext = NULL;
 
     av_log_set_level(AV_LOG_DEBUG);
     if (argc < 3) {
@@ -102,6 +181,13 @@ int gen_pic(int argc, char *argv[]) {
 
     avcodec_parameters_to_context(codecContext, inStream->codecpar);
 
+    //获取SWS上下文
+    // swsContext = sws_getCachedContext(NULL, codecContext->width, codecContext->height, codecContext->pix_fmt,
+    //            codecContext->width, codecContext->height, AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL);
+    swsContext = sws_getCachedContext(NULL, codecContext->width, codecContext->height, codecContext->pix_fmt,
+               640, 320, AV_PIX_FMT_BGR24, SWS_BICUBIC, NULL, NULL, NULL);
+
+
     //6 创建AVFrame  元数据
    frame = av_frame_alloc();
     if(!frame){
@@ -119,11 +205,12 @@ int gen_pic(int argc, char *argv[]) {
     // 8. 从源文件读取视频数据到目标文件
     while (av_read_frame(formatContext, packet) >= 0) {
         if(packet->stream_index == videoIndex){
-            decode(codecContext, frame, packet, dst);
+            decode(codecContext, swsContext, frame, packet, dst);
         }
     }
     //强制输出缓存中数据
-    decode(codecContext, frame, NULL, dst);
+    decode(codecContext, swsContext, frame, NULL, dst);
+
 
     // 9. 释放资源
 _ERROR:
@@ -134,6 +221,9 @@ _ERROR:
     if(codecContext){
         avcodec_free_context(&codecContext);
         codecContext = NULL;
+    }
+    if(swsContext){
+        
     }
     if(frame){
         av_frame_free(&frame);
