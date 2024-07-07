@@ -19,6 +19,7 @@ int main(int argc, char* argv[]){
     // encodeAudio(argc, argv);
     // encodeAudio2(argc, argv);
     gen_pic(argc, argv);
+    // gen_pic2(argc, argv);
 
     return 0; // Successful execution
 }
