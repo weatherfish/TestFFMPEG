@@ -55,6 +55,7 @@
         "get_info.h": "c",
         "opt.h": "c",
         "log.h": "c",
-        "sdl.h": "c"
+        "sdl.h": "c",
+        "extra.h": "c"
     }
 }

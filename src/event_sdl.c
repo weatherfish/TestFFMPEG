@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include <stdio.h>
 
-int sdl1(int argc, char* argv[]) {
+int event_sdl(int argc, char* argv[]) {
     SDL_Window* window = NULL;
     SDL_Renderer* render = NULL;
 
@@ -25,6 +25,8 @@ int sdl1(int argc, char* argv[]) {
     // SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
     // SDL_RenderClear(render);
     // SDL_RenderPresent(render);
+
+    
 
     // 添加事件循环
     int quit = 1;
