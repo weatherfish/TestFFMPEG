@@ -20,7 +20,8 @@ int main(int argc, char* argv[]){
     // encodeAudio2(argc, argv);
     // gen_pic(argc, argv);
     // event_sdl(argc, argv);
-    pcm_player(argc, argv);
+    // pcm_player(argc, argv);
+    simple_palyer(argc, argv);
 
     return 0; // Successful execution
 }
