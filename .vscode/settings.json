@@ -56,6 +56,7 @@
         "opt.h": "c",
         "log.h": "c",
         "sdl.h": "c",
-        "extra.h": "c"
+        "extra.h": "c",
+        "span": "c"
     }
 }

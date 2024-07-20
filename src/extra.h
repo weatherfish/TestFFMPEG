@@ -13,6 +13,7 @@ int gen_pic2(int argc, char* argv[]);
 int event_sdl(int argc, char* argv[]);
 int pcm_player(int argc, char* argv[]);
 int simple_palyer(int argc, char* argv[]);
+int simple_palyer2(int argc, char* argv[]);
 
 
 #endif
