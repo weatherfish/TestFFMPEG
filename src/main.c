@@ -22,7 +22,10 @@ int main(int argc, char* argv[]){
     // event_sdl(argc, argv);
     // pcm_player(argc, argv);
     // simple_player(argc, argv);
-    simple_player2(argc, argv);
+    // simple_player2(argc, argv);
+    simple_player3(argc, argv);
+    // player_demo(argc, argv);
+    // player(argc, argv);
 
     return 0; // Successful execution
 }

@@ -57,6 +57,11 @@
         "log.h": "c",
         "sdl.h": "c",
         "extra.h": "c",
-        "span": "c"
+        "span": "c",
+        "swresample.h": "c",
+        "avcodec.h": "c",
+        "fifo.h": "c",
+        "string.h": "c",
+        "queue.h": "c"
     }
 }

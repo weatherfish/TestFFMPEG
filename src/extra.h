@@ -14,6 +14,7 @@ int event_sdl(int argc, char* argv[]);
 int pcm_player(int argc, char* argv[]);
 int simple_player(int argc, char* argv[]);
 int simple_player2(int argc, char* argv[]);
-
+int simple_player3(int argc, char* argv[]);
+int player_demo(int argc, char* argv[]);
 
 #endif
