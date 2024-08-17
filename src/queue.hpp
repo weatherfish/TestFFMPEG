@@ -1,5 +1,4 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#pragma once
 
 #include <libavutil/avutil.h>
 #include <libavutil/fifo.h>
@@ -120,5 +119,3 @@ static void packet_queue_destroy(PacketQueue *q) {
     SDL_DestroyMutex(q->mutex);
     SDL_DestroyCond(q->cond);
 }
-
-#endif
