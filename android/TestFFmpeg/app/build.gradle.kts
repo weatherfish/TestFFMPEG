@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.felix.test.ffmpeg"
-    compileSdk = 34
+    compileSdk = 30
 
     defaultConfig {
         applicationId = "com.felix.test.ffmpeg"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 30
         versionCode = 1
         versionName = "1.0"
 
@@ -21,8 +21,6 @@ android {
             abiFilters.addAll(arrayOf("armeabi-v7a", "arm64-v8a"))
 //            abiFilters.addAll(arrayOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
         }
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -50,12 +48,7 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

@@ -35,9 +35,9 @@ class FFVideoView : SurfaceView {
     }
 
     fun playVideo(videoPath: String) {
-        Thread(kotlinx.coroutines.Runnable {
+        Thread {
             Log.d("FFVideoView", "run:: play video $videoPath")
             mSurface?.let { FFUtils.playVideo(videoPath, it) }
-        }).start()
+        }.start()
     }
 }
