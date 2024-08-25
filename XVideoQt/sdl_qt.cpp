@@ -11,6 +11,10 @@ static unsigned char* yuv = nullptr;
 static std::ifstream yuvFile;
 
 void SDLQt::timerEvent(QTimerEvent *ev){
+    if(view->IsExit()){
+        view->Close();
+        exit(0);
+    }
     yuvFile.read((char*)yuv, sdl_width * sdl_height * 1.5);
     view->Draw(yuv);
 }
@@ -33,6 +37,13 @@ SDLQt::SDLQt(QWidget *parent)
 
     yuv = new unsigned char[sdl_width * sdl_height * 1.5];
     startTimer(10);
+}
+
+void SDLQt::resizeEvent(QResizeEvent *ev) {
+    ui->label->resize(size());
+    ui->label->move(0, 0);
+
+    // view->scale(width(), height());  //设置为窗口的宽高
 }
 
 SDLQt::~SDLQt()

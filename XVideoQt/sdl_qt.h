@@ -17,7 +17,8 @@ public:
     SDLQt(QWidget *parent = nullptr);
     ~SDLQt();
 
-    void timerEvent(QTimerEvent *ev);
+    void timerEvent(QTimerEvent *ev) override;
+    void resizeEvent(QResizeEvent *ev) override;
 
 private:
     Ui::SDLQt *ui;

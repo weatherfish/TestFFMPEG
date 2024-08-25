@@ -24,12 +24,24 @@ public:
     //绘制接口 线程安全
     virtual bool Draw(const unsigned char* data, int linesize = 0) = 0;
 
+    virtual void Close() = 0;
+
+    //处理窗口退出
+    virtual bool IsExit() = 0;
+
+    void scale(int width, int height){
+        render_width_ = width;
+        render_height_ = height;
+    }
+
 
 protected:
-    int width_ = 0;
+    int width_ = 0; //材质大小
     int height_ = 0;
     VideoFormat format_ = RGBA;
 
+    int render_width_ = 0; //显示的宽高
+    int render_height_ = 0;
     std::mutex mtx_;
 
 

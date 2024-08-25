@@ -14,6 +14,8 @@ static bool InitVideo(){
         std::cout<<SDL_GetError()<<std::endl;
         return false;
     }
+    //设置抗锯齿算法
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
     return true;
 }
 
@@ -35,6 +37,13 @@ bool XSDL::Init(int w, int h, VideoFormat format , void* winId){
     if(!win_){
         std::cerr<<SDL_GetError()<<std::endl;
         return false;
+    }
+
+    if(texture_){
+        SDL_DestroyTexture(texture_);
+    }
+    if(render_){
+        SDL_DestroyRenderer(render_);
     }
 
     render_ = SDL_CreateRenderer(win_, -1, SDL_RENDERER_ACCELERATED);
@@ -95,11 +104,16 @@ bool XSDL::Draw(const unsigned char* data, int linesize){
     SDL_RenderClear(render_);
 
     SDL_Rect rect;
-    rect.x = 0;
-    rect.y = 0;
-    rect.w = width_;
-    rect.h = height_;
-    re = SDL_RenderCopy(render_, texture_, nullptr, &rect);
+    SDL_Rect *pRect = nullptr;
+    if(render_width_ > 0 && render_height_ > 0){
+        rect.x = 0;
+        rect.y = 0;
+        rect.w = render_width_;
+        rect.h = render_height_;
+        pRect = &rect;
+    }
+
+    re = SDL_RenderCopy(render_, texture_, nullptr, pRect);
     if(re != 0){
         std::cerr<<SDL_GetError()<<std::endl;
         return false;
@@ -108,4 +122,27 @@ bool XSDL::Draw(const unsigned char* data, int linesize){
     SDL_RenderPresent(render_);
 
     return true;
+}
+
+void XSDL::Close(){
+    std::unique_lock<std::mutex> sdl_lock_(mtx_); //确保现线程安全
+    if(texture_){
+        SDL_DestroyTexture(texture_);
+        texture_ = nullptr;
+    }
+    if(render_){
+        SDL_DestroyRenderer(render_);
+        render_ = nullptr;
+    }
+    if(win_){
+        SDL_DestroyWindow(win_);
+        win_ = nullptr;
+    }
+}
+
+bool XSDL::IsExit(){
+    SDL_Event ev;
+    SDL_WaitEventTimeout(&ev, 1);
+    if(ev.type == SDL_QUIT)return true;
+    return false;
 }

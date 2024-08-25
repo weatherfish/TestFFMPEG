@@ -16,6 +16,10 @@ public:
     //绘制接口 线程安全
     bool Draw(const unsigned char* data, int linesize = 0) override;
 
+    void Close() override;
+
+    bool IsExit() override;
+
 private:
     SDL_Window *win_ = nullptr;
     SDL_Renderer *render_ = nullptr;
