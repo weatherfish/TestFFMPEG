@@ -9,6 +9,9 @@
 
 @interface ViewController : UIViewController
 
+-(void) play;
+
+- (void) asyncDecodeFrames;
 
 @end
 
