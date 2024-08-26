@@ -124,6 +124,45 @@ bool XSDL::Draw(const unsigned char* data, int linesize){
     return true;
 }
 
+bool XSDL::Draw(const unsigned char* y, int y_pitch, const unsigned char* u, int u_pitch, const unsigned char* v, int v_pitch){
+    if(!y || !u || !v)return false;
+
+    std::unique_lock<std::mutex> sdl_lock_(mtx_);
+    if(!texture_ || !render_ || !win_ || width_ <= 0 || height_ <= 0) return false;
+
+    auto re = SDL_UpdateYUVTexture(texture_, NULL, y, y_pitch, u, u_pitch, v, v_pitch);
+    if(re != 0){
+        std::cerr<<SDL_GetError()<<std::endl;
+        return false;
+    }
+
+    SDL_RenderClear(render_);
+
+    SDL_Rect rect;
+    SDL_Rect *pRect = nullptr;
+    if(render_width_ > 0 && render_height_ > 0){
+        rect.x = 0;
+        rect.y = 0;
+        rect.w = render_width_;
+        rect.h = render_height_;
+        pRect = &rect;
+    }
+
+    re = SDL_RenderCopy(render_, texture_, nullptr, pRect);
+    if(re != 0){
+        std::cerr<<SDL_GetError()<<std::endl;
+        return false;
+    }
+
+    SDL_RenderPresent(render_);
+    return true;
+}
+
+// bool XSDL::Draw(const AVFrame *frame){
+
+//     return true;
+// }
+
 void XSDL::Close(){
     std::unique_lock<std::mutex> sdl_lock_(mtx_); //确保现线程安全
     if(texture_){

@@ -16,6 +16,8 @@ public:
     //绘制接口 线程安全
     bool Draw(const unsigned char* data, int linesize = 0) override;
 
+    bool Draw(const unsigned char* y, int y_pitch, const unsigned char* u, int u_pitch, const unsigned char* v, int v_pitch) override;
+
     void Close() override;
 
     bool IsExit() override;
