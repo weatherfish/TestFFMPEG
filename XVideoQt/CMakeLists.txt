@@ -33,6 +33,15 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         xvideo_view.h xvideo_view.cpp
         xsdl.h xsdl.cpp
+        xencode.h xencode.cpp
+        xcodec.h xcodec.cpp
+        xdecode.h xdecode.cpp
+        xformat.h xformat.cpp
+        xdemux.h xdemux.cpp
+        xmux.h xmux.cpp
+        xthread.h xthread.cpp
+        xdemuxtask.h xdemuxtask.cpp
+        xtools.h xtools.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET XVideoQt APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

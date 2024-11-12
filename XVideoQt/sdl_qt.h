@@ -21,12 +21,16 @@ public:
     void timerEvent(QTimerEvent *ev) override;
     void resizeEvent(QResizeEvent *ev) override;
 
-    void Main();
+    void MSleep(unsigned int ms);
 
+    void Main();
 signals:
     void ViewS(); //信号函数，将任务放入列表
 public slots:
     void View();//显示的槽函数，
+    void Open1();
+    void Open2();
+    void Open(int index);
 private:
     std::thread th_;
     bool isExit_ = false;

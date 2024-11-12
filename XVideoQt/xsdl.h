@@ -11,7 +11,7 @@ class XSDL :public XVideoView
 public:
     XSDL();
     //初始化渲染窗口
-    bool Init(int w, int h, VideoFormat format = VideoFormat::RGBA, void* winId = nullptr) override;
+    bool Init(int w, int h, VideoFormat format = VideoFormat::RGBA) override;
 
     //绘制接口 线程安全
     bool Draw(const unsigned char* data, int linesize = 0) override;

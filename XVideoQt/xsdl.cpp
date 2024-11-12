@@ -19,25 +19,30 @@ static bool InitVideo(){
     return true;
 }
 
-bool XSDL::Init(int w, int h, VideoFormat format , void* winId){
+bool XSDL::Init(int w, int h, VideoFormat format){
     if(w <= 0 || h <=0)return false;
     InitVideo();
     std::unique_lock<std::mutex> sdl_lock_(mtx_); //确保现线程安全
     width_ = w;
     height_ = h;
-    std::cout<<"width="<<w<<", height="<<h<<std::endl;
     format_ = format;
+    scale(width_, height_);  //设置为窗口的宽高
+
+    std::cout<<"width="<<w<<", height="<<h<<",fmt="<<format<<std::endl;
+
     if(!win_){
-        if(!winId){
+        if(!winID_){
             win_ = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
         }else{
-            win_ = SDL_CreateWindowFrom(winId);
+            win_ = SDL_CreateWindowFrom(winID_);
         }
     }
     if(!win_){
         std::cerr<<SDL_GetError()<<std::endl;
         return false;
     }
+
+    // SDL_SetWindowOpacity(win_, 0.0); // 设置透明度为 0.0（完全透明）
 
     if(texture_){
         SDL_DestroyTexture(texture_);
@@ -52,13 +57,18 @@ bool XSDL::Init(int w, int h, VideoFormat format , void* winId){
         return false;
     }
 
+    // SDL_SetRenderDrawBlendMode(render_, SDL_BLENDMODE_NONE);
+
     unsigned int sdlFmt =  SDL_PIXELFORMAT_RGBA8888;
     switch (format_) {
     case RGBA:
-        sdlFmt = SDL_PIXELFORMAT_RGBA8888;
+        sdlFmt = SDL_PIXELFORMAT_RGBA32;
         break;
     case ARGB:
-        sdlFmt = SDL_PIXELFORMAT_ARGB8888;
+        sdlFmt = SDL_PIXELFORMAT_ARGB32;
+        break;
+    case BGRA:
+        sdlFmt = SDL_PIXELFORMAT_BGRA32;
         break;
     case YUV420P:
         sdlFmt = SDL_PIXELFORMAT_IYUV;
@@ -84,6 +94,7 @@ bool XSDL::Draw(const unsigned char* data, int linesize){
         switch (format_) {
         case RGBA:
         case ARGB:
+        case BGRA:
             linesize = width_ * 4;
             break;
         case YUV420P:
@@ -104,16 +115,12 @@ bool XSDL::Draw(const unsigned char* data, int linesize){
     SDL_RenderClear(render_);
 
     SDL_Rect rect;
-    SDL_Rect *pRect = nullptr;
-    if(render_width_ > 0 && render_height_ > 0){
-        rect.x = 0;
-        rect.y = 0;
-        rect.w = render_width_;
-        rect.h = render_height_;
-        pRect = &rect;
-    }
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = width_;
+    rect.h = height_;
 
-    re = SDL_RenderCopy(render_, texture_, nullptr, pRect);
+    re = SDL_RenderCopy(render_, texture_, nullptr, &rect);
     if(re != 0){
         std::cerr<<SDL_GetError()<<std::endl;
         return false;
@@ -136,19 +143,17 @@ bool XSDL::Draw(const unsigned char* y, int y_pitch, const unsigned char* u, int
         return false;
     }
 
+    // SDL_SetRenderDrawColor(render_, 0, 0, 0, 0); // 设置为白色
+
     SDL_RenderClear(render_);
 
     SDL_Rect rect;
-    SDL_Rect *pRect = nullptr;
-    if(render_width_ > 0 && render_height_ > 0){
-        rect.x = 0;
-        rect.y = 0;
-        rect.w = render_width_;
-        rect.h = render_height_;
-        pRect = &rect;
-    }
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = width_;
+    rect.h = height_;
 
-    re = SDL_RenderCopy(render_, texture_, nullptr, pRect);
+    re = SDL_RenderCopy(render_, texture_, nullptr, &rect);
     if(re != 0){
         std::cerr<<SDL_GetError()<<std::endl;
         return false;
